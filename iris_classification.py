@@ -1,5 +1,3 @@
-# Import Libraries
-
 import pandas as pd
 import numpy as np
 
@@ -15,10 +13,6 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 
 
-# -----------------------------
-# Load Dataset
-# -----------------------------
-
 data = pd.read_csv("Iris.csv")
 
 print("First Five Rows")
@@ -33,15 +27,7 @@ print(data.columns)
 print("\nMissing Values")
 print(data.isnull().sum())
 
-# -----------------------------
-# Remove Id Column
-# -----------------------------
-
 data = data.drop("Id", axis=1)
-
-# -----------------------------
-# Encode Species
-# -----------------------------
 
 encoder = LabelEncoder()
 
@@ -50,17 +36,9 @@ data["Species"] = encoder.fit_transform(data["Species"])
 print("\nEncoded Classes")
 print(encoder.classes_)
 
-# -----------------------------
-# Features and Target
-# -----------------------------
-
 X = data.drop("Species", axis=1)
 
 y = data["Species"]
-
-# -----------------------------
-# Train Test Split
-# -----------------------------
 
 X_train, X_test, y_train, y_test = train_test_split(
     X,
@@ -69,9 +47,6 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state=42
 )
 
-# -----------------------------
-# Build Model
-# -----------------------------
 
 model = RandomForestClassifier(
     n_estimators=100,
@@ -79,25 +54,12 @@ model = RandomForestClassifier(
 )
 
 model.fit(X_train, y_train)
-
-# -----------------------------
-# Prediction
-# -----------------------------
-
 y_pred = model.predict(X_test)
-
-# -----------------------------
-# Accuracy
-# -----------------------------
 
 accuracy = accuracy_score(y_test, y_pred)
 
 print("\nAccuracy")
 print(round(accuracy*100,2),"%")
-
-# -----------------------------
-# Classification Report
-# -----------------------------
 
 print("\nClassification Report")
 
@@ -106,11 +68,6 @@ print(classification_report(
     y_pred,
     target_names=encoder.classes_
 ))
-
-# -----------------------------
-# Confusion Matrix
-# -----------------------------
-
 cm = confusion_matrix(y_test, y_pred)
 
 plt.figure(figsize=(6,5))
@@ -130,9 +87,6 @@ plt.title("Confusion Matrix")
 
 plt.show()
 
-# -----------------------------
-# Feature Importance
-# -----------------------------
 
 importance = model.feature_importances_
 
